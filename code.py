@@ -36,24 +36,23 @@ class NewsCRUD:
         self.connection.close()
         self.cursor.close()
          
-    def getAll(self):
+    def getAll(self, table):
         cursor = self.getcursor()
-        sql="select * from book"
-        cursor.execute(sql)
+        sql="select * from %s"
+        values = (table)
+        cursor.execute(sql, values)
         results = cursor.fetchall()
         returnArray = []
-        #print(results)
         for result in results:
-            #print(result)
             returnArray.append(self.convertToDictionary(result))
         
         self.closeAll()
         return returnArray
 
-    def findByID(self, id):
+    def findByID(self, id, table):
         cursor = self.getcursor()
-        sql="select * from book where id = %s"
-        values = (id,)
+        sql="select * from %s where id = %s"
+        values = (table, id)
 
         cursor.execute(sql, values)
         result = cursor.fetchone()
@@ -61,10 +60,17 @@ class NewsCRUD:
         self.closeAll()
         return returnvalue
 
-    def create(self, book):
+    def create(self, book, table):
         cursor = self.getcursor()
-        sql="insert into book (title,author, price) values (%s,%s,%s)"
-        values = (book.get("title"), book.get("author"), book.get("price"))
+
+        if (table == 'articles'):
+            sql="insert into articles (title,author, price) values (%s,%s,%s,%s,%s,%s,%s)"
+            values = (articles.get("title"), articles.get("author"), articles.get("description"), articles.get("url"), articles.get("urlToImage"), articles.get("publishedAt"),  articles.get("content"))
+
+        if (table == 'sources'):
+            sql="insert into Source (name) values (%s)"
+            values = (sources.get("Name"))
+
         cursor.execute(sql, values)
 
         self.connection.commit()
@@ -74,16 +80,22 @@ class NewsCRUD:
         return book
 
 
-    def update(self, id, book):
+    def update(self, id, book, table):
         cursor = self.getcursor()
-        sql="update book set title= %s,author=%s, price=%s  where id = %s"
-        print(f"update book {book}")
-        values = (book.get("title"), book.get("author"), book.get("price"),id)
+
+        if (table == 'articles'):
+            sql="update book set title= %s,author=%s, description=%s,url=%s,urlToImage=%s,publishedAt=%s,content=%s  where id = %s"
+            values = (articles.get("title"), articles.get("author"), articles.get("description"), articles.get("url"), articles.get("urlToImage"), articles.get("publishedAt"),  articles.get("content", id))
+
+        if (table == 'sources'):
+            sql="update book set Name= %s  where id = %s"
+            values = (source.get("name"),id)
+            
         cursor.execute(sql, values)
         self.connection.commit()
         self.closeAll()
         
-    def delete(self, id):
+    def delete(self, id, table):
         cursor = self.getcursor()
         sql="delete from book where id = %s"
         values = (id,)
@@ -92,8 +104,6 @@ class NewsCRUD:
 
         self.connection.commit()
         self.closeAll()
-        
-        #print("delete done")
 
     def convertToDictionary(self, resultLine):
         attkeys=['id','title','author', "price"]

@@ -1,0 +1,222 @@
+const template = `
+<article class="flex max-w-xl flex-col items-start justify-between border-2 border-solid border-gray-200 rounded-md p-2 shadow-md">
+  <div class="flex items-center gap-x-4 text-xs">
+    <time class="text-gray-500">$publishedAt</time>
+    <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">$source</a>,
+  </div>
+  <div class="group relative">
+    <h3 class="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
+      <a href="#"><span class="absolute inset-0"></span>$title</a>
+    </h3>
+    <div class="text-sm/6">
+      <p class="font-semibold text-gray-900">
+        <a href="#"><span class="absolute inset-0"></span>$author</a>
+      </p>
+    </div>
+    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">$description</p>
+  </div>
+  <div class="relative mt-8 flex items-center gap-x-4">
+    <img src="$urlToImage" alt="No Image..." />
+  </div>
+  <div class="group relative">
+    <p class="mt-5 line-clamp-3 text-sm/6 text-gray-600">$content</p>
+  </div>
+  <button type="button" onclick="openArticle('$url')" class="my-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500">Read</button>
+</article>`;
+
+const articles = [
+{
+source:  "Politico",
+author: "Elena Schneider",
+title: "Dems roll out ads hitting Republicans on Medicaid - Politico",
+description: "Democratic groups are preparing to start running ads next week attacking House Republicans for their vote to cut Medicaid spending.",
+url: "https://www.politico.com/news/2025/05/23/democrats-ads-medicaid-spending-00367272",
+urlToImage: "https://static.politico.com/33/ab/80e552fd4b6d92eccad2a651edee/u-s-congress-32350.jpg",
+publishedAt: "2025-05-23T17:30:00Z",
+content: "The core argument in the midterms and the TLDR on this budget is its the largest cut to Medicaid in history, said Jesse Ferguson, a Democratic strategist. As people find that out, they know its not a… [+3129 chars]"
+},
+{
+source:  "Wired",
+author: "Joel Khalili",
+title: "A Helicopter, Halibut, and ‘Y.M.C.A’: Inside Donald Trump’s Memecoin Dinner - WIRED",
+description: "On Thursday evening, US president Donald Trump attended a private banquet with 200 of the largest investors in his personal crypto coin. Here's what happened.",
+url: "https://www.wired.com/story/a-helicopter-halibut-and-ymca-inside-donald-trumps-memecoin-dinner/",
+urlToImage: "https://media.wired.com/photos/682ceff4684cd01a32075fc3/191:100/w_1280,c_limit/Trump-Crypto-Dinner-Business.jpg",
+publishedAt: "2025-05-23T17:11:07Z",
+content: "As US president Donald Trump left the stage at his golf club near Washington, DC, on Thursday night, he pointed to the crowd, brought his index finger to his templeas if to say: You know whats coming… [+2831 chars]"
+},
+{
+source:  "NPR",
+author: "",
+title: "The White House rejects a watchdog finding that it's breaking the law over halted funds - NPR",
+description: "The White House budget office rejected the conclusion of a nonpartisan congressional watchdog that said the Trump administration is breaking the law by not spending funds as directed by Congress.",
+url: "https://www.npr.org/2025/05/23/nx-s1-5409080/trump-white-house-impoundment-gao",
+urlToImage: "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2000x1125+0+0/resize/1400/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F07%2F07%2Fb3d935444b87a0a03122530ac87a%2Fap24214674180614.jpg",
+publishedAt: "2025-05-23T17:04:52Z",
+content: "The White House budget office on Friday rejected the conclusion of a nonpartisan congressional watchdog that said the Trump administration is breaking the law by not spending funds as directed by Con… [+2674 chars]"
+},
+{
+source:  "The Washington Post",
+author: "Evan Halper, Maxine Joselow",
+title: "Clean energy dollars are gushing to red states. Now GOP senators are in a bind. - The Washington Post",
+description: "Hundreds of billions of dollars in spending on red-state projects are jeopardized by Trump’s sweeping tax bill, which will face intense lobbying in the Senate.",
+url: "https://www.washingtonpost.com/business/2025/05/23/senate-clean-energy-tax-credits/",
+urlToImage: "https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/6V2ULYOFLPVKGV6GJYPEIW5OGU.JPG&w=1440",
+publishedAt: "2025-05-23T17:00:22Z",
+content: "Donald Trump campaigned last year on reversing what he called the Green New Scam, but Republican senators now must grapplewith the reality behind the slogan: cutting hundreds of billions of dollars o… [+7757 chars]"
+},
+{
+source:  "Vox",
+author: "Ian Millhiser",
+title: "The Supreme Court just revealed one thing it actually fears about Trump - vox.com",
+description: "The Republican justices draw a line in the sand – in an order that makes absolutely no sense.",
+url: "https://www.vox.com/scotus/414274/supreme-court-federal-reserve-trump-wilcox",
+urlToImage: "https://platform.vox.com/wp-content/uploads/sites/2/2025/05/gettyimages-2203339296.jpg?quality=90&strip=all&crop=0%2C10.755320479603%2C100%2C78.489359040795&w=1200",
+publishedAt: "2025-05-23T16:45:00Z",
+content: "On Thursday evening, the Supreme Court handed down a brief order, which temporarily permits President Donald Trump to fire two federal officials who, by law, are shielded from being summarily termina… [+10838 chars]"
+},
+{
+source:  "BBC News",
+author: "https://www.facebook.com/bbcnews",
+title: "UN says Gaza in 'cruellest phase' of war as 9,000 trucks' worth of aid ready at border - BBC",
+description: "After Israel eased its 11-week aid block this week, UN Secretary-General Antonio Guterres says Gaza's entire population is at risk of famine.",
+url: "https://www.bbc.com/news/live/c8repn0dv4xt",
+urlToImage: "https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/e5dc/live/8b847920-37d2-11f0-96c3-cf669419a2b0.jpg",
+publishedAt: "2025-05-23T16:41:55Z",
+content: "Alice CuddyReporting from Jerusalem\r\n\"Oh my God, oh my God, oh my God,\" a panicked voice repeats before a loud explosion can be heard. \r\nThen the voice note ends. \r\nKhamis Elessi, a doctor in Gaza Ci… [+1346 chars]"
+},
+{
+source:  "Page Six",
+author: "Leah Bitsky",
+title: "Barry Keoghan admits he’s an ‘addict’: ‘I’ve got scars here to literally prove it’ - Page Six",
+description: "“I’m accepting. I’m present. I’m content. I’m a father. I’m getting to just see that haze that was once there – it’s just a bit sharper now,” he said.",
+url: "https://pagesix.com/2025/05/23/celebrity-news/barry-keoghan-reveals-addiction-struggles-says-hes-got-the-scars-here-to-literally-prove-it/",
+urlToImage: "https://pagesix.com/wp-content/uploads/sites/3/2025/05/105174441.jpg?quality=75&strip=all&w=1024",
+publishedAt: "2025-05-23T16:26:00Z",
+content: "Barry Keoghan revealed that he struggles with addiction.\r\nThe “Saltburn” actor admitted to being an addict while reflecting on his parents’ deadly substance abuse in a recent interview with Authentic… [+2973 chars]"
+},
+{
+source:  "CNBC",
+author: "John Melloy, Lisa Kailai Han",
+title: "Dow falls 300 points as Trump threatens new tariffs against the EU and Apple: Live updates - CNBC",
+description: "The S&P 500 closed near the flatline on Thursday, while the Dow Jones Industrial Average and Nasdaq Composite finished the session marginally lower.",
+url: "https://www.cnbc.com/2025/05/22/stock-market-today-live-updates.html",
+urlToImage: "https://image.cnbcfm.com/api/v1/image/108144107-1747059788299-gettyimages-2214703526-mms24296_fyz2crxz.jpeg?v=1748012714&w=1920&h=1080",
+publishedAt: "2025-05-23T16:15:00Z",
+content: "Stocks declined Friday after President Donald Trump raised trade fears again, warning Apple  and recommending stiffer duties on the European Union.\r\nThe Dow Jones Industrial Average lost 236 points, … [+2659 chars]"
+},
+{
+source:  "Gematsu",
+author: "Sal Romano",
+title: "FANTASY LIFE i: The Girl Who Steals Time free DLC ‘Update the World!’ announced - Gematsu",
+description: "Publisher LEVEL-5 and developer LEVEL-5 Osaka Office have announced plans to release a free downloadable content for FANTASY LIFE i: The Girl Who Steals Time, which includes new recipes and expande…",
+url: "https://www.gematsu.com/2025/05/fantasy-life-i-the-girl-who-steals-time-free-dlc-update-the-world-announced",
+urlToImage: "https://www.gematsu.com/wp-content/uploads/2025/05/Fantasy-Life-i-Free-DLC_05-23-25.jpg",
+publishedAt: "2025-05-23T15:49:24Z",
+content: "Publisher LEVEL-5 and developer LEVEL-5 Osaka Office have announced plans to release a free downloadable content for FANTASY LIFE i: The Girl Who Steals Time, which includes new recipes and expanded … [+898 chars]"
+},
+{
+source:  "BBC News",
+author: null,
+title: "North Korea: Satellite photos show Kim Jong Un's damaged warship - BBC",
+description: "Kim Jong Un has called the shipyard accident a \"criminal act\" and vowed to find those responsible.",
+url: "https://www.bbc.com/news/articles/cx2qgdnxxe2o",
+urlToImage: "https://ichef.bbci.co.uk/news/1024/branded_news/3c8f/live/11e31340-37e8-11f0-8947-7d6241f9fce9.png",
+publishedAt: "2025-05-23T15:11:48Z",
+content: "North Korean leader Kim Jong Un has called the accident a \"criminal act\"\r\nSatellite images have for the first time shown the extent of a shipyard accident in North Korea that damaged a new warship in… [+1665 chars]"
+},
+{
+source:  "BBC News",
+author: null,
+title: "Senzo Mchunu: South Africa crime statistics debunk 'white genocide' claims - BBC",
+description: "Of the six most recent victims of farm killings, five were black and one white, the latest figures show.",
+url: "https://www.bbc.com/news/articles/cgr5xe7z0y0o",
+urlToImage: "https://ichef.bbci.co.uk/news/1024/branded_news/7feb/live/26b7c740-37d7-11f0-8947-7d6241f9fce9.jpg",
+publishedAt: "2025-05-23T15:00:43Z",
+content: "Wedaeli Chibelushi &amp; Nomsa MasekoBBC News, London &amp; Johannesburg\r\nSouth Africa's latest crime statistics debunk claims that a genocide is being committed against white people, the country's p… [+3389 chars]"
+},
+{
+source:  "NPR",
+author: "",
+title: "Ukraine and Russia begin the largest prisoner-of-war exchange since the invasion - NPR",
+description: "Ukraine and Russia have begun the exchange of 1,000 prisoners of war, the largest such swap since the beginning of Russia's full-scale invasion of Ukraine in February 2022.",
+url: "https://www.npr.org/2025/05/23/nx-s1-5408714/ukraine-russia-prisoners-exchange",
+urlToImage: "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1280x720+0+67/resize/1400/quality/100/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F19%2Fd8%2Fb9c9769345e7a887dfb75d479fe4%2Fgettyimages-2215927259.jpg",
+publishedAt: "2025-05-23T14:50:58Z",
+content: "A CITY IN NORTHERN UKRAINE Ukraine and Russia began the exchange of 1,000 prisoners of war Friday, the largest such swap since the beginning of Russia's full-scale invasion of Ukraine in February 202… [+3108 chars]"
+},
+{
+source:  "ZDNet",
+author: "Kyle Kucharski",
+title: "The 5 coolest gadgets I saw at Computex 2025 (and that you can actually buy) - ZDNET",
+description: "Many new gadgets and products debuted at the world's biggest computing event, but these stood out to me the most.",
+url: "https://www.zdnet.com/article/the-5-coolest-gadgets-i-saw-at-computex-2025-and-that-you-can-actually-buy/",
+urlToImage: "https://www.zdnet.com/a/img/resize/c18987ab50dcad88595e429ad7cba4580325b7f8/2025/05/21/2341cfc0-d22f-4ae6-a0ba-02286254dc4b/img-2272.jpg?auto=webp&fit=crop&height=675&width=1200",
+publishedAt: "2025-05-23T14:25:00Z",
+content: "Kyle Kucharski/ZDNET\r\nComputex 2025 just kicked off, and we're on the ground in Taipei with eyes on all the latest gadgets in the computing world. Unsurprisingly, AI is everywhere, with a general the… [+7027 chars]"
+},
+{
+source:  "New York Post",
+author: "Ariel Zilber",
+title: "Chris Cuomo slams Democrats after Israeli Embassy staffers killed in DC: ‘Mind your dogs’ - New York Post",
+description: "Cuomo’s comments came just one day after a fatal shooting outside the Israeli embassy in Washington, DC, where embassy employees were gunned down.",
+url: "https://nypost.com/2025/05/23/media/chris-cuomo-slams-democrats-after-israeli-embassy-staffers-killed-in-dc/",
+urlToImage: "https://nypost.com/wp-content/uploads/sites/2/2025/05/105168612.jpg?quality=75&strip=all&w=1024",
+publishedAt: "2025-05-23T14:03:00Z",
+content: "Left-leaning NewsNation anchor Chris Cuomo blasted the Democratic Party for ignoring the threat of Islamist extremism in the US while remaining singularly focused on demonizing President Trump.\r\nCuom… [+2867 chars]"
+},
+{
+source:  "NBC News",
+author: "Astha Rajvanshi",
+title: "Man wakes up to find a giant cargo ship in his yard - NBC News",
+description: "A man in Norway woke up to find a giant cargo ship had run aground in his yard.",
+url: "https://www.nbcnews.com/world/europe/norway-trondheim-fjord-container-ship-aground-yard-ncl-salten-rcna208703",
+urlToImage: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/rockcms/2025-05/250523-norway-mb-1156-b058bd.jpg",
+publishedAt: "2025-05-23T13:53:46Z",
+content: "The North Sea Container Line (NCL), the shipping company that chartered the ship, said in a press release Friday that a rescue operation was ongoing, adding that its highest priority was to ensure a … [+794 chars]"
+},
+{
+source:  "NBC News",
+author: "Rob Wile, Steve Kopack",
+title: "Apple stock sinks after Trump threatens 25% tariff if iPhones aren't made in the U.S. - NBC News",
+description: "Apple shares dropped as much as 3% Friday after President Donald Trump threatened the tech giant with a 25% tariff if it does not start producing iPhones in the U.S. — his latest salvo directly targeting a U.S. company over how it conducts its business.",
+url: "https://www.nbcnews.com/business/business-news/trump-threatens-25-tariff-apple-not-start-making-iphones-america-rcna208709",
+urlToImage: "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/rockcms/2025-05/250523-iphone-rs-6be01a.jpg",
+publishedAt: "2025-05-23T13:43:51Z",
+content: "Apple shares dropped as much as 3% Friday after President Donald Trump threatened the tech giant with a 25% tariff if it does not start producing iPhones in the U.S. his latest salvo directly targeti… [+5714 chars]"
+},
+{
+source:  "CBS Sports",
+author: "",
+title: "College Football Playoff alters seeding process: Why Notre Dame emerges as biggest winner under new format - CBS Sports",
+description: "The Fighting Irish benefit the most from the big change implemented for the 2025 season",
+url: "https://www.cbssports.com/college-football/news/college-football-playoff-alters-seeding-process-why-notre-dame-emerges-as-biggest-winner-under-new-format/",
+urlToImage: "https://sportshub.cbsistatic.com/i/r/2025/05/23/3d5d9201-818e-4db9-81e3-aa9f15ce5249/thumbnail/1200x675/badbaa49bbac39e976f962acb598a609/notre-dame.png",
+publishedAt: "2025-05-23T13:31:28Z",
+content: "More from College Football\r\nThis has been quite the offseason for Notre Dame and coach Marcus Freeman. The College Football Playoff's decision to alter the seeding and first-round bye process for the… [+2802 chars]"
+},
+{
+source:  "The Action Network",
+author: "Action Network Staff",
+title: "NBA Playoffs Best Bets, Picks, Predictions for Friday, May 23 - Action Network",
+description: "Read along for our staff's NBA Playoffs best bets, picks, and predictions for Friday, May 23 using the latest odds and prop markets.",
+url: "https://www.actionnetwork.com/nba/nba-playoffs-best-bets-picks-predictions-for-friday-may-23-qs",
+urlToImage: "https://images.actionnetwork.com/blog/2025/05/NBAbestbets523.jpg",
+publishedAt: "2025-05-23T13:31:00Z",
+content: "The conference round of the NBA Playoffs resumes with one standalone matchup on Friday night, as Game 2 of the Eastern Conference Finals between the Pacers and Knicks takes center stage at 8:00 p.m. … [+4300 chars]"
+}
+];
+
+
+const container = document.getElementById('articles'); // Make sure you have a container in HTML
+
+articles.forEach(article => {
+  let html = template;
+ const keys = Object.keys(article).sort((a, b) => b.length - a.length);
+
+  keys.forEach(key => {
+    const regex = new RegExp(`\\$${key}`, 'g');
+    html = html.replace(regex, article[key]);
+  });
+  container.innerHTML += html;
+});
