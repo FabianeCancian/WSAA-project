@@ -1,2 +1,4 @@
 #key
 /projectkey.py
+/venv
+/__pycache__
