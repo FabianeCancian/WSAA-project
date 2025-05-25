@@ -75,7 +75,7 @@ def createArticles():
 @app.route('/articles/<int:id>', methods=['PUT'])
 @cross_origin()
 def updateArticles(id):
-    foundArticle = newsCRUD.findByID(id, 'articles')
+    foundArticle = newsCRUD.findByID(id)
     if not foundArticle:
         abort(404)
     
