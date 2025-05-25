@@ -4,7 +4,7 @@ let id = null;
 //Loads available sources for a dropdown
 function getAllSourcesAjax() {
   $.ajax({
-    url: "http://127.0.0.1:5000/sources", // Flask endpoint to get all sources
+    url: "/sources", // Flask endpoint to get all sources
     method: "GET",
     data: "",
     dataType: "JSON",
@@ -41,7 +41,7 @@ function createArticleAjax() {
         article.id = id;
 
         $.ajax({
-          url: "http://127.0.0.1:5000/articles/" + id,
+          url: "/articles/" + id,
           method: "PUT",
           data: JSON.stringify(article),
           dataType: "JSON",
@@ -56,7 +56,7 @@ function createArticleAjax() {
       } else {
         // If no ID, it's a new article (POST)
         $.ajax({
-          url: "http://127.0.0.1:5000/articles",
+          url: "/articles",
           method: "POST",
           data: JSON.stringify(article),
           dataType: "JSON",
@@ -124,7 +124,7 @@ function getArticle() {
   if (articleId) {
     // If there's an article ID in URL, fetch the article to edit
     $.ajax({
-      url: "http://127.0.0.1:5000/articles/" + articleId,
+      url: "/articles/" + articleId,
       method: "GET",
       data: "",
       dataType: "JSON",

@@ -13,7 +13,7 @@ function createSourceAjax() {
 
       // Make an AJAX POST request to the Flask backend API to add the new source
       $.ajax({
-        url: "http://127.0.0.1:5000/sources",
+        url: "/sources",
         method: "POST",
         data: JSON.stringify(source),
         dataType: "JSON",

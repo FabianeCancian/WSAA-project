@@ -64,7 +64,7 @@ function editArticle(id) {
 // Fetches all articles from the backend API and displays them
 function getAllArticlesAjax() {
   $.ajax({
-    url: "http://127.0.0.1:5000/articles",
+    url: "/articles",
     method: "GET",
     data: "",
     dataType: "JSON",
@@ -80,7 +80,7 @@ function getAllArticlesAjax() {
 // Deletes an article by ID, then reloads the page to update the view
 function deleteArticle(id) {
   $.ajax({
-    url: "http://127.0.0.1:5000/articles/" + encodeURI(id),
+    url: "/articles/" + encodeURI(id),
     method: "DELETE",
     data: "",
     dataType: "JSON",
