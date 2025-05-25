@@ -1,5 +1,5 @@
 #import requests
-from projectkey import API_KEY
+#from projectkey import API_KEY
 from datetime import datetime # Required for date formatting
 
 # I used the news api to populate my database.
