@@ -221,6 +221,6 @@ INSERT INTO articles (source_id,author,title,description,url,urlToImage,publishe
  'https://images.actionnetwork.com/blog/2025/05/NBAbestbets523.jpg',
  '2025-05-23 13:31:00',
  'The conference round of the NBA Playoffs resumes with one standalone matchup on Friday night, as Game 2 of the Eastern Conference Finals between the Pacers and Knicks takes center stage at 8:00 p.m. … [+4300 chars]'
-)
+);
 
 -- Source: https://newsapi.org/
